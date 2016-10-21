@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="java.io.*,java.util.*, javax.servlet.*" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -31,21 +32,18 @@
           center: {lat: -34.397, lng: 150.644},
           zoom: 15
         });
-       //var infoWindow = new google.maps.InfoWindow({map: map});
-
-        // add a different marker for stores
+       
+        // add a different marker for stores in Serres
         var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
         var beachMarker = new google.maps.Marker({
             position: {lat:41.082285, lng: 23.543299},
             map: map,
             icon: image
-           // title: 'Ξ ΞΉΟΟΞ±ΟΞ―Ξ±'
             });
      
 
 
-        // Try HTML5 geolocation.
-        
+        // Try HTML5 geolocation.        
        
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -59,7 +57,7 @@
             var contentString = '<div id="content">'+
             '<div id="siteNotice">'+
             '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">ΞΟΞ―ΟΞΊΞ΅ΟΟΞ΅ Ξ΅Ξ΄Ο</h1>'+
+            '<h1 id="firstHeading" class="firstHeading">Τοποθεσία</h1>'+
             '<div id="bodyContent">'+
             '<p><b>Η τοποθεσία σας κατα προσέγγιση είνια εδώ. </b></p>'+
             '</div>';
@@ -78,10 +76,7 @@
           infowindow.open(map, marker);
         });
         
-        //
-
-           // infoWindow.setPosition(pos);
-           // infoWindow.setContent('ΞΟΞ―ΟΞΊΞ΅ΟΟΞ΅ Ξ΅Ξ΄Ο.');
+       
             map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
@@ -111,6 +106,40 @@
         </head>
     <body style="background-color:powderblue;">
         <h1>Καλωσήρθατε στην εφαρμογή Local Stores !</h1>
+        
+        <%
+            Date date = new Date();
+            out.print( "<h2 align=\"center\">" +date.toString()+"</h2>");
+        %>
+        
         <div id="map"></div>
+        <div> 
+            <p>Για να προβάλετε τις συντεταγμένες σας πατήστε στο παρακάτω κουμπί</p>
+
+            <button onclick="getLocation().style.display='block'" style="width:auto;">Συντεταγμένες της τοποθεσίας μου</button>
+
+            <p id="demo"> </p>    
+        
+        </div>
+        <script>
+            var x = document.getElementById("demo");
+
+            function getLocation() {
+                if (navigator.geolocation) {
+                        navigator.geolocation.watchPosition(showPosition);
+                } else {
+                        x.innerHTML = "Geolocation is not supported by this browser.";}
+            }
+    
+            function showPosition(position) {
+                x.innerHTML="Γεωγραφικό Πλάτος: " + position.coords.latitude +
+                "<br>Γεωγραφικό Μήκος: " + position.coords.longitude;
+            }
+            
+            
+           
+            
+            
+        </script>
     </body>
 </html>
